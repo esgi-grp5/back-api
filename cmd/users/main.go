@@ -1,7 +1,9 @@
 package main
 
 import (
+	"go-micro/internal/config"
 	"os"
+	"strconv"
 
 	_ "github.com/rizalgowandy/go-swag-sample/docs/ginsimple" // you need to update github.com/rizalgowandy/go-swag-sample with your own project path
 	"github.com/rs/zerolog"
@@ -20,10 +22,20 @@ func main() {
 }
 
 func run() error {
-	// Initialize server
+	/* Initialize config */
+	c := config.Config("users")
+	// Set zerolog level
+	if c.Debug {
+		zerolog.SetGlobalLevel(zerolog.DebugLevel)
+	}
+	// Set gin port
+	if c.Port == 0 {
+		c.Port = 3000
+	}
+	/* Initialize server */
 	s := newServer()
-	// Start server
-	if err := s.gin.Run(":3000"); err != nil {
+	/* Start server */
+	if err := s.gin.Run(strconv.Itoa(c.Port)); err != nil {
 		return err
 	}
 	return nil
