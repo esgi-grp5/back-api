@@ -5,7 +5,6 @@ import (
 	"os"
 	"strconv"
 
-	_ "github.com/rizalgowandy/go-swag-sample/docs/ginsimple" // you need to update github.com/rizalgowandy/go-swag-sample with your own project path
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 )

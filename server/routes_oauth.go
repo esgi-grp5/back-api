@@ -8,15 +8,6 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
-// OAuth godoc
-// @Summary Show the status of server.
-// @Description get access to User application.
-// @Tags root
-// @Accept */*
-// @Produce json
-// @Success 200 {object} map[string]interface{}
-// @Unauthorized 401 {object} map[string]interface{}
-// @Router /oauth [post]
 func (s *server) OAuth(c *gin.Context) {
 	// Init var
 	var (
