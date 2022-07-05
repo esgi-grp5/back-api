@@ -9,7 +9,7 @@ import (
 func (s *server) FlutterAccess(c *gin.Context) {
 	if verify(c, s) {
 		res := map[string]interface{}{
-			"data": "Flutter have accesses",
+			"data": "Hello world!",
 		}
 		c.JSON(http.StatusOK, res)
 	}
