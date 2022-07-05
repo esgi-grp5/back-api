@@ -6,14 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func (s *server) FlutterAccess(c *gin.Context) {
-	if verify(c, s) {
-		res := map[string]interface{}{
-			"data": "Hello world!",
-		}
-		c.JSON(http.StatusOK, res)
-	}
-}
+/* Access without OAuth */
 
 func (s *server) HealthCheck(c *gin.Context) {
 	res := map[string]interface{}{
@@ -21,4 +14,15 @@ func (s *server) HealthCheck(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, res)
+}
+
+/* Access with OAuth */
+
+func (s *server) FlutterAccess(c *gin.Context) {
+	if verify(c, s) {
+		res := map[string]interface{}{
+			"data": "Hello world!",
+		}
+		c.JSON(http.StatusOK, res)
+	}
 }
