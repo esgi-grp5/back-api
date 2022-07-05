@@ -33,9 +33,9 @@ func run() error {
 		c.Port = 3000
 	}
 	/* Initialize server */
-	s := newServer()
+	s := newServer(c)
 	/* Start server */
-	if err := s.gin.Run(strconv.Itoa(c.Port)); err != nil {
+	if err := s.gin.Run(":" + strconv.Itoa(c.Port)); err != nil {
 		return err
 	}
 	return nil
