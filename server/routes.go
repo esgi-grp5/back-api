@@ -1,7 +1,7 @@
 package main
 
 func (s *server) routes() {
-	// Routes
+	// Access without OAuth
 	s.gin.POST("/oauth", s.OAuth)
 	s.gin.GET("/health", s.HealthCheck)
 	// Access with OAuth
