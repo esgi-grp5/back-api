@@ -22,7 +22,7 @@ func main() {
 
 func run() error {
 	/* Initialize config */
-	c := config.Config("users")
+	c := config.Config()
 	// Set zerolog level
 	if c.Debug {
 		zerolog.SetGlobalLevel(zerolog.DebugLevel)

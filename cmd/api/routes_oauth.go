@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"go-micro/internal/config"
 	"net/http"
 
@@ -21,6 +22,10 @@ func (s *server) OAuth(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Error with User API"})
 		return
 	}
+
+	fmt.Println(oauthReq)
+	fmt.Println(oauthResp)
+	fmt.Println(s.oauth.OAuthRequest)
 
 	// Verify information with server
 	if s.oauth.OAuthRequest.ID != oauthReq.ID || s.oauth.OAuthRequest.Secret != oauthReq.Secret {

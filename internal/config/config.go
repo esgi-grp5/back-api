@@ -27,8 +27,8 @@ type OAuthResponse struct {
 	TokenType   string `json:"token_type"`
 }
 
-func Config(envPrefix string) Configuration {
-	viper.SetEnvPrefix(envPrefix)
+func Config() Configuration {
+	viper.SetEnvPrefix("api")
 	viper.SetConfigFile(".env")
 	if err := viper.ReadInConfig(); err != nil {
 		log.Info().Msg("cannot read config file .env, skipping to env var")
