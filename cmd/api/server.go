@@ -2,6 +2,7 @@ package main
 
 import (
 	"go-micro/internal/config"
+	"go-micro/internal/database"
 	"math/rand"
 	"time"
 
@@ -13,14 +14,17 @@ type server struct {
 	gin    *gin.Engine
 	config config.Configuration
 	oauth  config.OAuthApp
+	// DB
+	token *database.TokenPostgres
 }
 
-func newServer(c config.Configuration) *server {
+func newServer(c config.Configuration, token *database.TokenPostgres) *server {
 	// Initialize server
 	s := &server{
 		gin:    gin.New(),
 		config: c,
 		oauth:  c.OAuthApp,
+		token:  token,
 	}
 	// Initialize router
 	s.routes()
