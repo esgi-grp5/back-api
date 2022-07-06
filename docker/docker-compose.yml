@@ -8,14 +8,12 @@ services:
     depends_on:
       - postgres
     environment:
-      - API_DEBUG=${DEBUG}
-      - API_PORT=${PORT}
-      - API_OAUTH_APP_ID=${OAUTH_APP_ID}
-      - API_OAUTH_APP_SECRET=${OAUTH_APP_SECRET}
-      - API_USERNAME=${POSTGRES_USERNAME}
-      - API_PASSWORD=${POSTGRES_PASSWORD}
-      - API_HOST=${POSTGRES_HOST}
-      - API_NAME=${POSTGRES_DBNAME}
+      - API_DEBUG=TRUE
+      - API_PORT=3000
+      - API_USERNAME=postgres
+      - API_PASSWORD=password
+      - API_HOST=localhost:5432
+      - API_NAME=user_api
     ports:
       - "3000:3000"
   postgres:
