@@ -10,6 +10,7 @@ type Configuration struct {
 	Debug    bool
 	Port     int
 	OAuthApp OAuthApp
+	DB       Postgres
 }
 
 type OAuthApp struct {
@@ -25,6 +26,12 @@ type OAuthRequest struct {
 type OAuthResponse struct {
 	AccessToken string `json:"access_token"`
 	TokenType   string `json:"token_type"`
+}
+type Postgres struct {
+	Username string
+	Password string
+	Host     string
+	Name     string
 }
 
 func Config() Configuration {
@@ -43,6 +50,12 @@ func Config() Configuration {
 				ID:     viper.GetString("OAUTH_APP_ID"),
 				Secret: viper.GetString("OAUTH_APP_SECRET"),
 			},
+		},
+		DB: Postgres{
+			Username: viper.GetString("USERNAME"),
+			Password: viper.GetString("PASSWORD"),
+			Host:     viper.GetString("HOST"),
+			Name:     viper.GetString("NAME"),
 		},
 	}
 
