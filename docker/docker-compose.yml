@@ -12,10 +12,10 @@ services:
       - API_PORT=${PORT}
       - API_OAUTH_APP_ID=${OAUTH_APP_ID}
       - API_OAUTH_APP_SECRET=${OAUTH_APP_SECRET}
-      - API_USERNAME=${USERNAME}
-      - API_PASSWORD=${PASSWORD}
-      - API_HOST=${HOST}
-      - API_NAME=${NAME}
+      - API_USERNAME=${POSTGRES_USERNAME}
+      - API_PASSWORD=${POSTGRES_PASSWORD}
+      - API_HOST=${POSTGRES_HOST}
+      - API_NAME=${POSTGRES_DBNAME}
     ports:
       - "3000:3000"
   postgres:
@@ -23,8 +23,8 @@ services:
     image: postgres:latest
     restart: always
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=password
+      - POSTGRES_USER=${POSTGRES_USERNAME}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     ports:
       - "5432:5432"
     volumes:
