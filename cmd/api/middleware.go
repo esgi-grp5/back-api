@@ -14,9 +14,8 @@ func (s *server) OAuthMiddleware(c *gin.Context) {
 	token := strings.TrimPrefix(tokenBearer, "Bearer ")
 	if strings.HasPrefix(tokenBearer, "Bearer ") && s.oauth.OAuthResponse.AccessToken == token {
 		c.Next()
-		return
 	} else {
 		c.String(http.StatusUnauthorized, "Unauthorized")
-		return
+		c.Abort()
 	}
 }
