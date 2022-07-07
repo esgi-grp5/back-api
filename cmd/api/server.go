@@ -15,16 +15,16 @@ type server struct {
 	config config.Configuration
 	oauth  config.OAuthApp
 	// DB
-	token *database.TokenPostgres
+	db *database.DatabasePostgres
 }
 
-func newServer(c config.Configuration, token *database.TokenPostgres) *server {
+func newServer(c config.Configuration, db *database.DatabasePostgres) *server {
 	// Initialize server
 	s := &server{
 		gin:    gin.New(),
 		config: c,
 		oauth:  c.OAuthApp,
-		token:  token,
+		db:     db,
 	}
 	// Initialize router
 	s.routes()

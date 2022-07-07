@@ -77,4 +77,20 @@ var migrations = []func(conn *pgx.Conn) error{
 		_, err = conn.Exec(context.Background(), sql)
 		return err
 	},
+	// v2
+	// create user table
+	func(conn *pgx.Conn) (err error) {
+		sql := `
+		CREATE SEQUENCE users_id_seq START 1;
+		CREATE TABLE "public"."users" (
+			"id" integer DEFAULT nextval('users_id_seq') NOT NULL,
+			"username" text NOT NULL,
+			"mail" text NOT NULL,
+			"password" text NOT NULL,
+			CONSTRAINT "users_pkey" PRIMARY KEY ("id")
+		) WITH (oids = false);`
+
+		_, err = conn.Exec(context.Background(), sql)
+		return err
+	},
 }

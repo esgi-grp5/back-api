@@ -22,7 +22,7 @@ func (s *server) OAuth(c *gin.Context) {
 		return
 	}
 
-	tokenAPI, err := s.token.SelectAuth(oauthReq.Secret)
+	tokenAPI, err := s.db.SelectAuth(oauthReq.Secret)
 	if err != nil {
 		log.Err(err).Msg("Error in OAuth")
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Error with User API"})
