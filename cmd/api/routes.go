@@ -8,4 +8,5 @@ func (s *server) routes() {
 	oauth := s.gin.Use(s.OAuthMiddleware)
 	oauth.GET("/hello", s.FlutterAccess)
 	oauth.POST("/login", s.Login)
+	oauth.POST("/register", s.Register)
 }
