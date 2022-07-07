@@ -62,7 +62,7 @@ func Migrate(username, password, host, bdd string) (int, error) {
 
 var migrations = []func(conn *pgx.Conn) error{
 	// v1
-	// create schema and sites table
+	// create token table
 	func(conn *pgx.Conn) (err error) {
 		sql := `
 		CREATE SEQUENCE token_id_seq START 1;
