@@ -19,10 +19,8 @@ func (s *server) HealthCheck(c *gin.Context) {
 /* Access with OAuth */
 
 func (s *server) FlutterAccess(c *gin.Context) {
-	if verify(c, s) {
-		res := map[string]interface{}{
-			"data": "Hello world!",
-		}
-		c.JSON(http.StatusOK, res)
+	res := map[string]interface{}{
+		"data": "Hello world!",
 	}
+	c.JSON(http.StatusOK, res)
 }

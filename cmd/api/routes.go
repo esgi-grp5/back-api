@@ -5,6 +5,7 @@ func (s *server) routes() {
 	s.gin.POST("/oauth", s.OAuth)
 	s.gin.GET("/health", s.HealthCheck)
 	// Access with OAuth
-	s.gin.GET("/hello", s.FlutterAccess)
-	s.gin.POST("/login", s.Login)
+	oauth := s.gin.Use(s.OAuthMiddleware)
+	oauth.GET("/hello", s.FlutterAccess)
+	oauth.POST("/login", s.Login)
 }
