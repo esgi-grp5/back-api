@@ -1,9 +1,14 @@
 version: "3.7"
 
+networks:
+  api:
+    name: api
+    external: false
+
 services:
-  user_api:
-    container_name: user_api
-    image: user_api
+  api:
+    container_name: api
+    image: api
     restart: always
     depends_on:
       - postgres
@@ -12,17 +17,21 @@ services:
       - API_PORT=3000
       - API_USERNAME=postgres
       - API_PASSWORD=password
-      - API_HOST=localhost:5432
+      - API_HOST=postgres
       - API_NAME=user_api
+    networks:
+      - api
     ports:
       - "3000:3000"
   postgres:
     container_name: postgres
-    image: postgres:latest
+    image: timescale/timescaledb:latest-pg14
     restart: always
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=password
+    networks:
+      - api
     ports:
       - "5432:5432"
     volumes:
@@ -31,6 +40,8 @@ services:
     container_name: adminer
     image: adminer
     restart: always
+    networks:
+      - api
     ports:
       - "8085:8080"
     depends_on:
