@@ -6,7 +6,6 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/rs/zerolog/log"
-	"golang.org/x/crypto/bcrypt"
 )
 
 /* Access without OAuth */
@@ -30,11 +29,6 @@ func (s *server) FlutterAccess(c *gin.Context) {
 	}
 }
 
-func CompareHashPassword(password, hashed string) bool {
-	err := bcrypt.CompareHashAndPassword([]byte(password), []byte(hashed))
-	return err == nil
-}
-
 func (s *server) Login(c *gin.Context) {
 	if verify(c, s) {
 		var userRequest database.User
@@ -52,7 +46,6 @@ func (s *server) Login(c *gin.Context) {
 			return
 		}
 
-		// if CompareHashPassword(userRequest.Password, user.Password) {
 		if user.Password == userRequest.Password {
 			res := map[string]interface{}{
 				"id":       user.ID,
