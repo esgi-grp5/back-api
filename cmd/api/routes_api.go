@@ -34,28 +34,30 @@ func (s *server) Login(c *gin.Context) {
 		var userRequest database.User
 		// Get JSON body
 		if err := c.ShouldBindJSON(&userRequest); err != nil {
-			log.Err(err).Msg("Error in OAuth")
+			log.Err(err).Msg("Error in Login")
 			c.JSON(http.StatusBadRequest, gin.H{"error": "Error with User API"})
 			return
 		}
 
-		user, err := s.db.SelectUser(userRequest.Mail)
+		// Verify information with database
+		userDB, err := s.db.SelectUser(userRequest.Mail)
 		if err != nil {
-			log.Err(err).Msg("Error in OAuth")
+			log.Err(err).Msg("Error in Login")
 			c.JSON(http.StatusBadRequest, gin.H{"error": "Error with User API"})
 			return
 		}
 
-		if user.Password == userRequest.Password {
+		// Verify information with request and database
+		if userDB.Password == userRequest.Password {
 			res := map[string]interface{}{
-				"id":       user.ID,
-				"username": user.Username,
-				"mail":     user.Mail,
-				"password": user.Password,
+				"id":       userDB.ID,
+				"username": userDB.Username,
+				"mail":     userDB.Mail,
+				"password": userDB.Password,
 			}
 			c.JSON(http.StatusOK, res)
 		} else {
-			log.Warn().Interface("User request", userRequest).Msg("Invalid password")
+			log.Warn().Str("User request", userRequest.Mail).Msg("Invalid password")
 			c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid password"})
 		}
 	}
