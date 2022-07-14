@@ -22,7 +22,7 @@ func (s *server) routes() {
 	oauth.POST("/game/wishlist", s.AddGameWishList)
 	oauth.DELETE("/game/wishlist", s.DeleteGameWishList)
 	// Music
-	// oauth.GET("/music/wishlist", s.GetMusicWishList)
-	// oauth.POST("/music/wishlist", s.AddMusicWishList)
-	// oauth.DELETE("/music/wishlist", s.DeleteMusicWishList)
+	oauth.GET("/music/wishlist", s.GetMusicWishList)
+	oauth.POST("/music/wishlist", s.AddMusicWishList)
+	oauth.DELETE("/music/wishlist", s.DeleteMusicWishList)
 }

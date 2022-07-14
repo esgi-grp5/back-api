@@ -204,3 +204,44 @@ func (store *DatabasePostgres) DeleteGameWishList(usernameID, gameID int) error 
 	}
 	return nil
 }
+
+/* Music */
+
+func (store *DatabasePostgres) SelectMusicWishList(idUser int) ([]Music, error) {
+	ctx := context.Background()
+	var musics []Music
+	rows, err := store.db.Query(ctx, "SELECT * FROM music WHERE username_id = $1", idUser)
+	if err != nil {
+		log.Error().Err(err).Msg("music repository. cannot select music")
+		return nil, err
+	}
+	defer rows.Close()
+	for rows.Next() {
+		var music Music
+		err := rows.Scan(&music.ID, &music.UsernameID, &music.MusicID)
+		if err != nil {
+			log.Error().Err(err).Msg("music repository. cannot select music")
+			return nil, err
+		}
+		musics = append(musics, music)
+	}
+	return musics, nil
+}
+
+func (store *DatabasePostgres) InsertMusicWishList(usernameID, musicID int) error {
+	ctx := context.Background()
+	_, err := store.db.Exec(ctx, "INSERT INTO music (username_id, music_id) VALUES ($1, $2)", usernameID, musicID)
+	if err != nil {
+		log.Error().Err(err).Msg("music repository. cannot insert music")
+	}
+	return nil
+}
+
+func (store *DatabasePostgres) DeleteMusicWishList(usernameID, musicID int) error {
+	ctx := context.Background()
+	_, err := store.db.Exec(ctx, "DELETE FROM music WHERE username_id = $1 AND music_id = $2", usernameID, musicID)
+	if err != nil {
+		log.Error().Err(err).Msg("music repository. cannot delete music")
+	}
+	return nil
+}

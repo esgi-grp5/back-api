@@ -33,3 +33,9 @@ type Game struct {
 	UsernameID int `json:"username_id"`
 	GameID     int `json:"game_id"`
 }
+
+type Music struct {
+	ID         int `json:"id"`
+	UsernameID int `json:"username_id"`
+	MusicID    int `json:"music_id"`
+}
