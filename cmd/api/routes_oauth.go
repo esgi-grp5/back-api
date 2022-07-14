@@ -2,6 +2,7 @@ package main
 
 import (
 	"go-micro/internal/config"
+	"go-micro/internal/randomString"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -37,7 +38,7 @@ func (s *server) OAuth(c *gin.Context) {
 	}
 
 	// Generate OAuthResponse
-	oauthResp.AccessToken = RandomString(20)
+	oauthResp.AccessToken = randomString.RandomString(20)
 	oauthResp.TokenType = "bearer_token"
 
 	// Put on server
