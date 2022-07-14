@@ -15,3 +15,9 @@ type User struct {
 	Mail     string `json:"mail"`
 	Password string `json:"password"`
 }
+
+type Movie struct {
+	ID         int `json:"id"`
+	UsernameID int `json:"username_id"`
+	MovieID    int `json:"movie_id"`
+}

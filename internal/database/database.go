@@ -74,3 +74,42 @@ func (store *DatabasePostgres) InsertUser(user User) error {
 	}
 	return nil
 }
+
+/* Movie */
+
+func (store *DatabasePostgres) SelectMovieWishList(idUser int) ([]Movie, error) {
+	ctx := context.Background()
+	var movies []Movie
+	rows, err := store.db.Query(ctx, "SELECT * FROM movie WHERE username_id = $1", idUser)
+	if err != nil {
+		log.Error().Err(err).Msg("movie repository. cannot select movie")
+	}
+	defer rows.Close()
+	for rows.Next() {
+		var movie Movie
+		err := rows.Scan(&movie.ID, &movie.UsernameID, &movie.MovieID)
+		if err != nil {
+			log.Error().Err(err).Msg("movie repository. cannot select movie")
+		}
+		movies = append(movies, movie)
+	}
+	return movies, nil
+}
+
+func (store *DatabasePostgres) InsertMovieWishList(usernameID, movieID int) error {
+	ctx := context.Background()
+	_, err := store.db.Exec(ctx, "INSERT INTO movie (username_id, movie_id) VALUES ($1, $2)", usernameID, movieID)
+	if err != nil {
+		log.Error().Err(err).Msg("movie repository. cannot insert movie")
+	}
+	return nil
+}
+
+func (store *DatabasePostgres) DeleteMovieWishList(usernameID, movieID int) error {
+	ctx := context.Background()
+	_, err := store.db.Exec(ctx, "DELETE FROM movie WHERE username_id = $1 AND movie_id = $2", usernameID, movieID)
+	if err != nil {
+		log.Error().Err(err).Msg("movie repository. cannot delete movie")
+	}
+	return nil
+}
