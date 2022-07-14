@@ -8,14 +8,14 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
-func verify(c *gin.Context, s *server) bool {
+func (s *server) OAuthMiddleware(c *gin.Context) {
 	log.Info().Msg("API used")
 	tokenBearer := c.Request.Header.Get("Authorization")
 	token := strings.TrimPrefix(tokenBearer, "Bearer ")
 	if strings.HasPrefix(tokenBearer, "Bearer ") && s.oauth.OAuthResponse.AccessToken == token {
-		return true
+		c.Next()
 	} else {
 		c.String(http.StatusUnauthorized, "Unauthorized")
-		return false
+		c.Abort()
 	}
 }

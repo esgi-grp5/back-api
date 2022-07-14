@@ -1,8 +1,8 @@
 package main
 
 import (
-	"fmt"
 	"go-micro/internal/config"
+	"go-micro/internal/randomString"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -23,19 +23,22 @@ func (s *server) OAuth(c *gin.Context) {
 		return
 	}
 
-	fmt.Println(oauthReq)
-	fmt.Println(oauthResp)
-	fmt.Println(s.oauth.OAuthRequest)
+	tokenAPI, err := s.db.SelectAuth(oauthReq.Secret)
+	if err != nil {
+		log.Err(err).Msg("Error in OAuth")
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Error with User API"})
+		return
+	}
 
 	// Verify information with server
-	if s.oauth.OAuthRequest.ID != oauthReq.ID || s.oauth.OAuthRequest.Secret != oauthReq.Secret {
+	if tokenAPI.ClientName != oauthReq.ID || tokenAPI.Token != oauthReq.Secret {
 		log.Warn().Interface("OAuth request", oauthReq).Msg("Invalid ID or Secret")
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid ID or Secret"})
 		return
 	}
 
 	// Generate OAuthResponse
-	oauthResp.AccessToken = RandomString(20)
+	oauthResp.AccessToken = randomString.RandomString(20)
 	oauthResp.TokenType = "bearer_token"
 
 	// Put on server
