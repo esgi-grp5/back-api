@@ -93,4 +93,40 @@ var migrations = []func(conn *pgx.Conn) error{
 		_, err = conn.Exec(context.Background(), sql)
 		return err
 	},
+	// v3
+	// create movie, serie, game, music table
+	func(conn *pgx.Conn) (err error) {
+		sql := `
+		CREATE SEQUENCE movie_id_seq START 1;
+		CREATE TABLE "public"."users" (
+			"id" integer DEFAULT nextval('movie_id_seq') NOT NULL,
+			"username_id" integer NOT NULL,
+			"movie_id" integer NOT NULL,
+			CONSTRAINT "movie_pkey" PRIMARY KEY ("id")
+		) WITH (oids = false);
+		CREATE SEQUENCE serie_id_seq START 1;
+		CREATE TABLE "public"."users" (
+			"id" integer DEFAULT nextval('serie_id_seq') NOT NULL,
+			"username_id" integer NOT NULL,
+			"serie_id" integer NOT NULL,
+			CONSTRAINT "serie_pkey" PRIMARY KEY ("id")
+		) WITH (oids = false);
+		CREATE SEQUENCE game_id_seq START 1;
+		CREATE TABLE "public"."users" (
+			"id" integer DEFAULT nextval('game_id_seq') NOT NULL,
+			"username_id" integer NOT NULL,
+			"game_id" integer NOT NULL,
+			CONSTRAINT "game_pkey" PRIMARY KEY ("id")
+		) WITH (oids = false);
+		CREATE SEQUENCE music_id_seq START 1;
+		CREATE TABLE "public"."users" (
+			"id" integer DEFAULT nextval('music_id_seq') NOT NULL,
+			"username_id" integer NOT NULL,
+			"music_id" integer NOT NULL,
+			CONSTRAINT "music_pkey" PRIMARY KEY ("id")
+		) WITH (oids = false);`
+
+		_, err = conn.Exec(context.Background(), sql)
+		return err
+	},
 }
