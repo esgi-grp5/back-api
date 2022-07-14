@@ -16,14 +16,14 @@ func (s *server) GetSerieWishList(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Error with User API"})
 		return
 	}
-	// Get movie wishlist
+	// Get serie wishlist
 	wishlist, err := s.db.SelectSerieWishList(userRequest.ID)
 	if err != nil {
-		log.Err(err).Msg("Error in GetMovieWishList")
+		log.Err(err).Msg("Error in GetSerieWishList")
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Error with User API"})
 		return
 	}
-	// Return movie wishlist
+	// Return serie wishlist
 	c.JSON(http.StatusOK, wishlist)
 }
 
@@ -47,13 +47,13 @@ func (s *server) AddSerieWishList(c *gin.Context) {
 			return
 		}
 	}
-	// Add movie to wishlist
+	// Add serie to wishlist
 	if err = s.db.InsertSerieWishList(serieRequest.UsernameID, serieRequest.SerieID); err != nil {
 		log.Err(err).Msg("Error in AddSerieWishList")
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Error with User API"})
 		return
 	}
-	// Return movie wishlist
+	// Return serie wishlist
 	c.JSON(http.StatusOK, "success")
 }
 
@@ -65,13 +65,13 @@ func (s *server) DeleteSerieWishList(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Error with User API"})
 		return
 	}
-	// Delete movie from wishlist
+	// Delete serie from wishlist
 	err := s.db.DeleteSerieWishList(serieRequest.UsernameID, serieRequest.SerieID)
 	if err != nil {
 		log.Err(err).Msg("Error in DeleteSerieWishList")
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Error with User API"})
 		return
 	}
-	// Return movie wishlist
+	// Return serie wishlist
 	c.JSON(http.StatusOK, "success")
 }
