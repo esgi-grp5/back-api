@@ -18,9 +18,9 @@ func (s *server) routes() {
 	oauth.POST("/serie/wishlist", s.AddSerieWishList)
 	oauth.DELETE("/serie/wishlist", s.DeleteSerieWishList)
 	// Game
-	// oauth.GET("/game/wishlist", s.GetGameWishList)
-	// oauth.POST("/game/wishlist", s.AddGameWishList)
-	// oauth.DELETE("/game/wishlist", s.DeleteGameWishList)
+	oauth.GET("/game/wishlist", s.GetGameWishList)
+	oauth.POST("/game/wishlist", s.AddGameWishList)
+	oauth.DELETE("/game/wishlist", s.DeleteGameWishList)
 	// Music
 	// oauth.GET("/music/wishlist", s.GetMusicWishList)
 	// oauth.POST("/music/wishlist", s.AddMusicWishList)

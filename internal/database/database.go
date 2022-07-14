@@ -163,3 +163,44 @@ func (store *DatabasePostgres) DeleteSerieWishList(usernameID, serieID int) erro
 	}
 	return nil
 }
+
+/* Game */
+
+func (store *DatabasePostgres) SelectGameWishList(idUser int) ([]Game, error) {
+	ctx := context.Background()
+	var games []Game
+	rows, err := store.db.Query(ctx, "SELECT * FROM game WHERE username_id = $1", idUser)
+	if err != nil {
+		log.Error().Err(err).Msg("game repository. cannot select game")
+		return nil, err
+	}
+	defer rows.Close()
+	for rows.Next() {
+		var game Game
+		err := rows.Scan(&game.ID, &game.UsernameID, &game.GameID)
+		if err != nil {
+			log.Error().Err(err).Msg("game repository. cannot select game")
+			return nil, err
+		}
+		games = append(games, game)
+	}
+	return games, nil
+}
+
+func (store *DatabasePostgres) InsertGameWishList(usernameID, gameID int) error {
+	ctx := context.Background()
+	_, err := store.db.Exec(ctx, "INSERT INTO game (username_id, game_id) VALUES ($1, $2)", usernameID, gameID)
+	if err != nil {
+		log.Error().Err(err).Msg("game repository. cannot insert game")
+	}
+	return nil
+}
+
+func (store *DatabasePostgres) DeleteGameWishList(usernameID, gameID int) error {
+	ctx := context.Background()
+	_, err := store.db.Exec(ctx, "DELETE FROM game WHERE username_id = $1 AND game_id = $2", usernameID, gameID)
+	if err != nil {
+		log.Error().Err(err).Msg("game repository. cannot delete game")
+	}
+	return nil
+}

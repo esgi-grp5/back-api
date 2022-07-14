@@ -21,8 +21,15 @@ type Movie struct {
 	UsernameID int `json:"username_id"`
 	MovieID    int `json:"movie_id"`
 }
+
 type Serie struct {
 	ID         int `json:"id"`
 	UsernameID int `json:"username_id"`
 	SerieID    int `json:"serie_id"`
+}
+
+type Game struct {
+	ID         int `json:"id"`
+	UsernameID int `json:"username_id"`
+	GameID     int `json:"game_id"`
 }
