@@ -75,3 +75,25 @@ func (s *server) DeleteSerieWishList(c *gin.Context) {
 	// Return serie wishlist
 	c.JSON(http.StatusOK, "success")
 }
+
+func (s *server) GetSerieCount(c *gin.Context) {
+	var serieRequest database.Serie
+	// Get JSON body
+	if err := c.ShouldBindJSON(&serieRequest); err != nil {
+		log.Err(err).Msg("Error in Login")
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Error with User API"})
+		return
+	}
+	// Get serie count
+	count, err := s.db.SelectSerieCount(serieRequest.SerieID)
+	if err != nil {
+		log.Err(err).Msg("Error in GetSerieCount")
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Error with User API"})
+		return
+	}
+	res := map[string]interface{}{
+		"count": count,
+	}
+	// Return serie count
+	c.JSON(http.StatusOK, res)
+}

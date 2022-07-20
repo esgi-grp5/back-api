@@ -123,6 +123,17 @@ func (store *DatabasePostgres) DeleteMovieWishList(usernameID, movieID int) erro
 	return nil
 }
 
+func (store *DatabasePostgres) SelectMovieCount(movieID int) (int, error) {
+	ctx := context.Background()
+	var count int
+	err := store.db.QueryRow(ctx, "SELECT count(*) FROM movie WHERE movie_id = $1", movieID).Scan(&count)
+	if err != nil {
+		log.Error().Err(err).Msg("movie repository. cannot count movie")
+		return 0, err
+	}
+	return count, nil
+}
+
 /* Serie */
 
 func (store *DatabasePostgres) SelectSerieWishList(idUser int) ([]Serie, error) {
@@ -162,6 +173,17 @@ func (store *DatabasePostgres) DeleteSerieWishList(usernameID, serieID int) erro
 		log.Error().Err(err).Msg("serie repository. cannot delete serie")
 	}
 	return nil
+}
+
+func (store *DatabasePostgres) SelectSerieCount(serieID int) (int, error) {
+	ctx := context.Background()
+	var count int
+	err := store.db.QueryRow(ctx, "SELECT count(*) FROM serie WHERE serie_id = $1", serieID).Scan(&count)
+	if err != nil {
+		log.Error().Err(err).Msg("serie repository. cannot count serie")
+		return 0, err
+	}
+	return count, nil
 }
 
 /* Game */
@@ -205,6 +227,17 @@ func (store *DatabasePostgres) DeleteGameWishList(usernameID, gameID int) error 
 	return nil
 }
 
+func (store *DatabasePostgres) SelectGameCount(gameID int) (int, error) {
+	ctx := context.Background()
+	var count int
+	err := store.db.QueryRow(ctx, "SELECT count(*) FROM game WHERE game_id = $1", gameID).Scan(&count)
+	if err != nil {
+		log.Error().Err(err).Msg("game repository. cannot count game")
+		return 0, err
+	}
+	return count, nil
+}
+
 /* Music */
 
 func (store *DatabasePostgres) SelectMusicWishList(idUser int) ([]Music, error) {
@@ -244,4 +277,15 @@ func (store *DatabasePostgres) DeleteMusicWishList(usernameID, musicID int) erro
 		log.Error().Err(err).Msg("music repository. cannot delete music")
 	}
 	return nil
+}
+
+func (store *DatabasePostgres) SelectMusicCount(musicID int) (int, error) {
+	ctx := context.Background()
+	var count int
+	err := store.db.QueryRow(ctx, "SELECT count(*) FROM music WHERE music_id = $1", musicID).Scan(&count)
+	if err != nil {
+		log.Error().Err(err).Msg("music repository. cannot count music")
+		return 0, err
+	}
+	return count, nil
 }

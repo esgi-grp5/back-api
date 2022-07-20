@@ -75,3 +75,25 @@ func (s *server) DeleteMovieWishList(c *gin.Context) {
 	// Return movie wishlist
 	c.JSON(http.StatusOK, "success")
 }
+
+func (s *server) GetMovieCount(c *gin.Context) {
+	var movieRequest database.Movie
+	// Get JSON body
+	if err := c.ShouldBindJSON(&movieRequest); err != nil {
+		log.Err(err).Msg("Error in Login")
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Error with User API"})
+		return
+	}
+	// Get movie count
+	count, err := s.db.SelectMovieCount(movieRequest.MovieID)
+	if err != nil {
+		log.Err(err).Msg("Error in GetMovieCount")
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Error with User API"})
+		return
+	}
+	res := map[string]interface{}{
+		"count": count,
+	}
+	// Return movie count
+	c.JSON(http.StatusOK, res)
+}
