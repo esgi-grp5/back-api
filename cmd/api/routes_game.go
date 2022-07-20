@@ -75,3 +75,25 @@ func (s *server) DeleteGameWishList(c *gin.Context) {
 	// Return game wishlist
 	c.JSON(http.StatusOK, "success")
 }
+
+func (s *server) GetGameCount(c *gin.Context) {
+	var gameRequest database.Game
+	// Get JSON body
+	if err := c.ShouldBindJSON(&gameRequest); err != nil {
+		log.Err(err).Msg("Error in Login")
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Error with User API"})
+		return
+	}
+	// Get game count
+	count, err := s.db.SelectGameCount(gameRequest.GameID)
+	if err != nil {
+		log.Err(err).Msg("Error in GetGameCount")
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Error with User API"})
+		return
+	}
+	res := map[string]interface{}{
+		"count": count,
+	}
+	// Return game count
+	c.JSON(http.StatusOK, res)
+}

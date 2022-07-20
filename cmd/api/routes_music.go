@@ -75,3 +75,25 @@ func (s *server) DeleteMusicWishList(c *gin.Context) {
 	// Return music wishlist
 	c.JSON(http.StatusOK, "success")
 }
+
+func (s *server) GetMusicCount(c *gin.Context) {
+	var musicRequest database.Music
+	// Get JSON body
+	if err := c.ShouldBindJSON(&musicRequest); err != nil {
+		log.Err(err).Msg("Error in Login")
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Error with User API"})
+		return
+	}
+	// Get music count
+	count, err := s.db.SelectMusicCount(musicRequest.MusicID)
+	if err != nil {
+		log.Err(err).Msg("Error in GetMusicCount")
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Error with User API"})
+		return
+	}
+	res := map[string]interface{}{
+		"count": count,
+	}
+	// Return music count
+	c.JSON(http.StatusOK, res)
+}
