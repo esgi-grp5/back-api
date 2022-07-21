@@ -10,16 +10,10 @@ import (
 )
 
 func (s *server) GetSerieWishList(c *gin.Context) {
-	var userRequest User
-	// Get JSON body
-	if err := c.ShouldBindJSON(&userRequest); err != nil {
-		log.Err(err).Msg("Error in Login")
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Error with User API"})
-		return
-	}
-	userID, err := strconv.Atoi(userRequest.ID)
+	userRequest := c.Param("id")
+	userID, err := strconv.Atoi(userRequest)
 	if err != nil {
-		log.Err(err).Msg("Error in GetSerieWishList when Atoi")
+		log.Err(err).Msg("Error in GetMusicWishList when Atoi")
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Error with User API"})
 		return
 	}
@@ -84,14 +78,8 @@ func (s *server) DeleteSerieWishList(c *gin.Context) {
 }
 
 func (s *server) GetSerieCount(c *gin.Context) {
-	var serieRequest Serie
-	// Get JSON body
-	if err := c.ShouldBindJSON(&serieRequest); err != nil {
-		log.Err(err).Msg("Error in Login")
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Error with User API"})
-		return
-	}
-	serieID, err := strconv.Atoi(serieRequest.ID)
+	serieRequest := c.Param("id")
+	serieID, err := strconv.Atoi(serieRequest)
 	if err != nil {
 		log.Err(err).Msg("Error in GetSerieCount when Atoi")
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Error with User API"})

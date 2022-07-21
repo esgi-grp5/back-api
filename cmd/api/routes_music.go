@@ -10,14 +10,8 @@ import (
 )
 
 func (s *server) GetMusicWishList(c *gin.Context) {
-	var userRequest User
-	// Get JSON body
-	if err := c.ShouldBindJSON(&userRequest); err != nil {
-		log.Err(err).Msg("Error in Login")
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Error with User API"})
-		return
-	}
-	userID, err := strconv.Atoi(userRequest.ID)
+	userRequest := c.Param("id")
+	userID, err := strconv.Atoi(userRequest)
 	if err != nil {
 		log.Err(err).Msg("Error in GetMusicWishList when Atoi")
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Error with User API"})
@@ -84,14 +78,8 @@ func (s *server) DeleteMusicWishList(c *gin.Context) {
 }
 
 func (s *server) GetMusicCount(c *gin.Context) {
-	var musicRequest Music
-	// Get JSON body
-	if err := c.ShouldBindJSON(&musicRequest); err != nil {
-		log.Err(err).Msg("Error in Login")
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Error with User API"})
-		return
-	}
-	musicID, err := strconv.Atoi(musicRequest.ID)
+	musicRequest := c.Param("id")
+	musicID, err := strconv.Atoi(musicRequest)
 	if err != nil {
 		log.Err(err).Msg("Error in GetMusicCount when Atoi")
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Error with User API"})

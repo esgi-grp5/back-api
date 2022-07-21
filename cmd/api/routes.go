@@ -10,7 +10,7 @@ func (s *server) routes() {
 	oauth.POST("/login", s.Login)
 	oauth.POST("/register", s.Register)
 	// Movie
-	oauth.GET("/movie/wishlist", s.GetMovieWishList)
+	oauth.GET("/movie/wishlist/:id", s.GetMovieWishList)
 	oauth.POST("/movie/wishlist", s.AddMovieWishList)
 	oauth.DELETE("/movie/wishlist", s.DeleteMovieWishList)
 	oauth.GET("/movie/count", s.GetMovieCount)

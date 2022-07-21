@@ -10,14 +10,8 @@ import (
 )
 
 func (s *server) GetGameWishList(c *gin.Context) {
-	var userRequest User
-	// Get JSON body
-	if err := c.ShouldBindJSON(&userRequest); err != nil {
-		log.Err(err).Msg("Error in Login")
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Error with User API"})
-		return
-	}
-	userID, err := strconv.Atoi(userRequest.ID)
+	userRequest := c.Param("id")
+	userID, err := strconv.Atoi(userRequest)
 	if err != nil {
 		log.Err(err).Msg("Error in GetGameWishList when Atoi")
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Error with User API"})
@@ -84,14 +78,8 @@ func (s *server) DeleteGameWishList(c *gin.Context) {
 }
 
 func (s *server) GetGameCount(c *gin.Context) {
-	var gameRequest Game
-	// Get JSON body
-	if err := c.ShouldBindJSON(&gameRequest); err != nil {
-		log.Err(err).Msg("Error in Login")
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Error with User API"})
-		return
-	}
-	gameID, err := strconv.Atoi(gameRequest.ID)
+	gameRequest := c.Param("id")
+	gameID, err := strconv.Atoi(gameRequest)
 	if err != nil {
 		log.Err(err).Msg("Error in GetGameCount when Atoi")
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Error with User API"})

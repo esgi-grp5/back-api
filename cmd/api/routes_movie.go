@@ -10,14 +10,8 @@ import (
 )
 
 func (s *server) GetMovieWishList(c *gin.Context) {
-	var userRequest User
-	// Get JSON body
-	if err := c.ShouldBindJSON(&userRequest); err != nil {
-		log.Err(err).Msg("Error in Login")
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Error with User API"})
-		return
-	}
-	userID, err := strconv.Atoi(userRequest.ID)
+	userRequest := c.Param("id")
+	userID, err := strconv.Atoi(userRequest)
 	if err != nil {
 		log.Err(err).Msg("Error in GetMovieWishList when Atoi")
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Error with User API"})
@@ -84,14 +78,8 @@ func (s *server) DeleteMovieWishList(c *gin.Context) {
 }
 
 func (s *server) GetMovieCount(c *gin.Context) {
-	var movieRequest Movie
-	// Get JSON body
-	if err := c.ShouldBindJSON(&movieRequest); err != nil {
-		log.Err(err).Msg("Error in Login")
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Error with User API"})
-		return
-	}
-	movieID, err := strconv.Atoi(movieRequest.ID)
+	movieRequest := c.Param("id")
+	movieID, err := strconv.Atoi(movieRequest)
 	if err != nil {
 		log.Err(err).Msg("Error in GetMovieCount when Atoi")
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Error with User API"})
