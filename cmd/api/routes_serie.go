@@ -3,21 +3,28 @@ package main
 import (
 	"go-micro/internal/database"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/rs/zerolog/log"
 )
 
 func (s *server) GetSerieWishList(c *gin.Context) {
-	var userRequest database.User
+	var userRequest User
 	// Get JSON body
 	if err := c.ShouldBindJSON(&userRequest); err != nil {
 		log.Err(err).Msg("Error in Login")
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Error with User API"})
 		return
 	}
+	userID, err := strconv.Atoi(userRequest.ID)
+	if err != nil {
+		log.Err(err).Msg("Error in GetSerieWishList when Atoi")
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Error with User API"})
+		return
+	}
 	// Get serie wishlist
-	wishlist, err := s.db.SelectSerieWishList(userRequest.ID)
+	wishlist, err := s.db.SelectSerieWishList(userID)
 	if err != nil {
 		log.Err(err).Msg("Error in GetSerieWishList")
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Error with User API"})
@@ -77,15 +84,21 @@ func (s *server) DeleteSerieWishList(c *gin.Context) {
 }
 
 func (s *server) GetSerieCount(c *gin.Context) {
-	var serieRequest database.Serie
+	var serieRequest Serie
 	// Get JSON body
 	if err := c.ShouldBindJSON(&serieRequest); err != nil {
 		log.Err(err).Msg("Error in Login")
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Error with User API"})
 		return
 	}
+	serieID, err := strconv.Atoi(serieRequest.ID)
+	if err != nil {
+		log.Err(err).Msg("Error in GetSerieCount when Atoi")
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Error with User API"})
+		return
+	}
 	// Get serie count
-	count, err := s.db.SelectSerieCount(serieRequest.SerieID)
+	count, err := s.db.SelectSerieCount(serieID)
 	if err != nil {
 		log.Err(err).Msg("Error in GetSerieCount")
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Error with User API"})

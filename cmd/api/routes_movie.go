@@ -3,21 +3,28 @@ package main
 import (
 	"go-micro/internal/database"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/rs/zerolog/log"
 )
 
 func (s *server) GetMovieWishList(c *gin.Context) {
-	var userRequest database.User
+	var userRequest User
 	// Get JSON body
 	if err := c.ShouldBindJSON(&userRequest); err != nil {
 		log.Err(err).Msg("Error in Login")
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Error with User API"})
 		return
 	}
+	userID, err := strconv.Atoi(userRequest.ID)
+	if err != nil {
+		log.Err(err).Msg("Error in GetMovieWishList when Atoi")
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Error with User API"})
+		return
+	}
 	// Get movie wishlist
-	wishlist, err := s.db.SelectMovieWishList(userRequest.ID)
+	wishlist, err := s.db.SelectMovieWishList(userID)
 	if err != nil {
 		log.Err(err).Msg("Error in GetMovieWishList")
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Error with User API"})
@@ -77,15 +84,21 @@ func (s *server) DeleteMovieWishList(c *gin.Context) {
 }
 
 func (s *server) GetMovieCount(c *gin.Context) {
-	var movieRequest database.Movie
+	var movieRequest Movie
 	// Get JSON body
 	if err := c.ShouldBindJSON(&movieRequest); err != nil {
 		log.Err(err).Msg("Error in Login")
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Error with User API"})
 		return
 	}
+	movieID, err := strconv.Atoi(movieRequest.ID)
+	if err != nil {
+		log.Err(err).Msg("Error in GetMovieCount when Atoi")
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Error with User API"})
+		return
+	}
 	// Get movie count
-	count, err := s.db.SelectMovieCount(movieRequest.MovieID)
+	count, err := s.db.SelectMovieCount(movieID)
 	if err != nil {
 		log.Err(err).Msg("Error in GetMovieCount")
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Error with User API"})
