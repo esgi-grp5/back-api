@@ -3,21 +3,28 @@ package main
 import (
 	"go-micro/internal/database"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/rs/zerolog/log"
 )
 
 func (s *server) GetMusicWishList(c *gin.Context) {
-	var userRequest database.User
+	var userRequest User
 	// Get JSON body
 	if err := c.ShouldBindJSON(&userRequest); err != nil {
 		log.Err(err).Msg("Error in Login")
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Error with User API"})
 		return
 	}
+	userID, err := strconv.Atoi(userRequest.ID)
+	if err != nil {
+		log.Err(err).Msg("Error in GetMusicWishList when Atoi")
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Error with User API"})
+		return
+	}
 	// Get music wishlist
-	wishlist, err := s.db.SelectMusicWishList(userRequest.ID)
+	wishlist, err := s.db.SelectMusicWishList(userID)
 	if err != nil {
 		log.Err(err).Msg("Error in GetMusicWishList")
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Error with User API"})
@@ -77,15 +84,21 @@ func (s *server) DeleteMusicWishList(c *gin.Context) {
 }
 
 func (s *server) GetMusicCount(c *gin.Context) {
-	var musicRequest database.Music
+	var musicRequest Music
 	// Get JSON body
 	if err := c.ShouldBindJSON(&musicRequest); err != nil {
 		log.Err(err).Msg("Error in Login")
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Error with User API"})
 		return
 	}
+	musicID, err := strconv.Atoi(musicRequest.ID)
+	if err != nil {
+		log.Err(err).Msg("Error in GetMusicCount when Atoi")
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Error with User API"})
+		return
+	}
 	// Get music count
-	count, err := s.db.SelectMusicCount(musicRequest.MusicID)
+	count, err := s.db.SelectMusicCount(musicID)
 	if err != nil {
 		log.Err(err).Msg("Error in GetMusicCount")
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Error with User API"})

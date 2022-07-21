@@ -3,21 +3,28 @@ package main
 import (
 	"go-micro/internal/database"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/rs/zerolog/log"
 )
 
 func (s *server) GetGameWishList(c *gin.Context) {
-	var userRequest database.User
+	var userRequest User
 	// Get JSON body
 	if err := c.ShouldBindJSON(&userRequest); err != nil {
 		log.Err(err).Msg("Error in Login")
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Error with User API"})
 		return
 	}
+	userID, err := strconv.Atoi(userRequest.ID)
+	if err != nil {
+		log.Err(err).Msg("Error in GetGameWishList when Atoi")
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Error with User API"})
+		return
+	}
 	// Get game wishlist
-	wishlist, err := s.db.SelectGameWishList(userRequest.ID)
+	wishlist, err := s.db.SelectGameWishList(userID)
 	if err != nil {
 		log.Err(err).Msg("Error in GetGameWishList")
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Error with User API"})
@@ -77,15 +84,21 @@ func (s *server) DeleteGameWishList(c *gin.Context) {
 }
 
 func (s *server) GetGameCount(c *gin.Context) {
-	var gameRequest database.Game
+	var gameRequest Game
 	// Get JSON body
 	if err := c.ShouldBindJSON(&gameRequest); err != nil {
 		log.Err(err).Msg("Error in Login")
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Error with User API"})
 		return
 	}
+	gameID, err := strconv.Atoi(gameRequest.ID)
+	if err != nil {
+		log.Err(err).Msg("Error in GetGameCount when Atoi")
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Error with User API"})
+		return
+	}
 	// Get game count
-	count, err := s.db.SelectGameCount(gameRequest.GameID)
+	count, err := s.db.SelectGameCount(gameID)
 	if err != nil {
 		log.Err(err).Msg("Error in GetGameCount")
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Error with User API"})

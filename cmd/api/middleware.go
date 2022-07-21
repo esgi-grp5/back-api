@@ -5,17 +5,24 @@ import (
 	"strings"
 
 	"github.com/gin-gonic/gin"
-	"github.com/rs/zerolog/log"
 )
 
 func (s *server) OAuthMiddleware(c *gin.Context) {
-	log.Info().Msg("API used")
-	tokenBearer := c.Request.Header.Get("Authorization")
-	token := strings.TrimPrefix(tokenBearer, "Bearer ")
-	if strings.HasPrefix(tokenBearer, "Bearer ") && s.oauth.OAuthResponse.AccessToken == token {
-		c.Next()
-	} else {
-		c.String(http.StatusUnauthorized, "Unauthorized")
-		c.Abort()
+	const prefix = "Bearer "
+	header := c.GetHeader("Authorization")
+	token := header[len(prefix):]
+
+	if header == "" {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "Authorization header missing or empty"})
 	}
+
+	if !strings.HasPrefix(header, "Bearer ") {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "Bearer prefix missing or mismatch with RFC 6750"})
+	}
+
+	if s.oauth.OAuthResponse.AccessToken != token {
+		c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Invalid token"})
+	}
+
+	c.Next()
 }
