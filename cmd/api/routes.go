@@ -10,23 +10,23 @@ func (s *server) routes() {
 	oauth.POST("/login", s.Login)
 	oauth.POST("/register", s.Register)
 	// Movie
-	oauth.GET("/movie/wishlist", s.GetMovieWishList)
+	oauth.GET("/movie/wishlist/:id", s.GetMovieWishList)
 	oauth.POST("/movie/wishlist", s.AddMovieWishList)
 	oauth.DELETE("/movie/wishlist", s.DeleteMovieWishList)
-	oauth.GET("/movie/count", s.GetMovieCount)
+	oauth.GET("/movie/count/:id", s.GetMovieCount)
 	// Serie
-	oauth.GET("/serie/wishlist", s.GetSerieWishList)
+	oauth.GET("/serie/wishlist/:id", s.GetSerieWishList)
 	oauth.POST("/serie/wishlist", s.AddSerieWishList)
 	oauth.DELETE("/serie/wishlist", s.DeleteSerieWishList)
-	oauth.GET("/serie/count", s.GetSerieCount)
+	oauth.GET("/serie/count/:id", s.GetSerieCount)
 	// Game
-	oauth.GET("/game/wishlist", s.GetGameWishList)
+	oauth.GET("/game/wishlist/:id", s.GetGameWishList)
 	oauth.POST("/game/wishlist", s.AddGameWishList)
 	oauth.DELETE("/game/wishlist", s.DeleteGameWishList)
-	oauth.GET("/game/count", s.GetGameCount)
+	oauth.GET("/game/count/:id", s.GetGameCount)
 	// Music
-	oauth.GET("/music/wishlist", s.GetMusicWishList)
+	oauth.GET("/music/wishlist/:id", s.GetMusicWishList)
 	oauth.POST("/music/wishlist", s.AddMusicWishList)
 	oauth.DELETE("/music/wishlist", s.DeleteMusicWishList)
-	oauth.GET("/music/count", s.GetMusicCount)
+	oauth.GET("/music/count/:id", s.GetMusicCount)
 }
